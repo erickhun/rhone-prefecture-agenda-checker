@@ -19,3 +19,7 @@ print(jsess)
 # step2: go to appointment page
 r = session.get("https://rdv.rhone.gouv.fr/eAppointment_PREF69_NAT_DEMANDE/element/jsp/appointment.jsp;jsessionid=" + jsess)
 print(r.text)
+
+# TODO step3: check if 1 available spot
+
+# TODO step4: send email
