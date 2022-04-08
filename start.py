@@ -22,6 +22,22 @@ print(r.text)
 
 # TODO step3: select wanted option
 
+wantedOption = {
+    "previousValueId": False,
+    "ISiteBeanLib":  None,
+    "serviceBeanLib":  None,
+    "ISiteBeanKey": "site6",
+    "serviceBeanKey": 146,
+    "preSelectedSiteKey": "site6",
+    "dayValue":  None,
+    "dayValueIso":  None,
+    "hourValue": None,
+    "selectedMotiveKeyList": 602
+}
+
+r = session.post("https://rdv.rhone.gouv.fr/eAppointment_PREF69_NAT_DEMANDE/step2ScenarioTwo.do;jsessionid=" + jsess, data=wantedOption)
+
+print(r.text)
 # TODO step4: go to appointment page
 
 # TODO step5 check if 1 available spot
