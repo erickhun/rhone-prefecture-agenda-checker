@@ -1,45 +1,43 @@
 import requests
+import time
 from bs4 import BeautifulSoup
 from urllib import parse
 
-# page 1: load first page
-URL = "https://rdv.rhone.gouv.fr/eAppointment_PREF69_NAT_DEMANDE/appointment.do?preselectservice=DEPOT"
+
 session = requests.Session()
 session.headers.update({'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36'})
-r = session.get(URL)
+
+
+# page 1: load first page
+r = session.get("https://rdv.rhone.gouv.fr/eAppointment_PREF69_NAT_DEMANDE/appointment.do?preselectservice=DEPOT")
 print(r.url)
 
-soup = BeautifulSoup(r.text, features="html.parser")
-print(r.url)
+print("Page1 - " + r.url)
+print(r.headers)
+print(r.status_code)
+print("\n")
 
 # get jsessionid
 jsess = (parse.urlparse(r.url).params).split("=")[1]
-print(jsess)
 
-# step2: go to select type of appointment page
-r = session.get("https://rdv.rhone.gouv.fr/eAppointment_PREF69_NAT_DEMANDE/element/jsp/appointment.jsp;jsessionid=" + jsess)
-print(r.text)
+# TODO step2: go to select type of appointment page
+# This step doesn't work yet. 
+#  In the chrome network tabs, there are multiple calls. 
+# Not sure which one is needed to get to the next page
+
+data= {"previousValueId": False}
+r = session.post("https://rdv.rhone.gouv.fr/eAppointment_PREF69_NAT_DEMANDE/step1ScenarioTwo.do;jsessionid=" + jsess, data=data, allow_redirects=True)
+print("Page2 - " + r.url)
+print(r.headers)
+print(r.status_code)
 
 # TODO step3: select wanted option
 
-wantedOption = {
-    "previousValueId": False,
-    "ISiteBeanLib":  None,
-    "serviceBeanLib":  None,
-    "ISiteBeanKey": "site6",
-    "serviceBeanKey": 146,
-    "preSelectedSiteKey": "site6",
-    "dayValue":  None,
-    "dayValueIso":  None,
-    "hourValue": None,
-    "selectedMotiveKeyList": 602
-}
-
-r = session.post("https://rdv.rhone.gouv.fr/eAppointment_PREF69_NAT_DEMANDE/step2ScenarioTwo.do;jsessionid=" + jsess, data=wantedOption)
-
-print(r.text)
 # TODO step4: go to appointment page
 
 # TODO step5 check if 1 available spot
 
 # TODO step6: send email
+
+
+# soup = BeautifulSoup(r.text, features="html.parser")
